@@ -19,17 +19,19 @@ function findById(schemeId) {
 
 //needs work vv
 
-function findSteps(id) {
-  return db("schemes").join("steps", "schemes.id", "steps.scheme_id");
-  // .where(("steps.scheme_id" = id));
+function findSteps(scheme_id) {
+  return db("schemes")
+    .join("steps", "steps.scheme_id", "schemes.id")
+    .where({ scheme_id })
+    .orderBy("steps.step_number");
 }
 
-//ask about id vv
-
 function add(scheme) {
-  return db("schemes").insert(scheme);
-  //   .then(ids => {
-  //     return findById(ids[0]);
+  return db("schemes")
+    .insert(scheme)
+    .then(ids => {
+      return findById(ids[0]);
+    });
 }
 
 function update(changes, schemeId) {
